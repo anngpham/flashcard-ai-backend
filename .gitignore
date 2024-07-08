@@ -34,3 +34,6 @@ build/
 
 
 src/main/resources/secret.properties
+
+### OS ###
+.DS_Store
