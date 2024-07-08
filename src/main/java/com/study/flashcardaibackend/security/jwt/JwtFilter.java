@@ -33,15 +33,15 @@ public class JwtFilter extends OncePerRequestFilter {
         String email = null;
 
         if (authHeader != null && authHeader.startsWith(JwtConstants.TOKEN_PREFIX + " ")) {
-            token = authHeader.substring(JwtConstants.TOKEN_PREFIX.length()+1);
+            token = authHeader.substring(JwtConstants.TOKEN_PREFIX.length() + 1);
             email = jwtService.extractEmail(token);
         }
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (email != null) {
 
             UserDetails userDetails = context.getBean(UserDetailsServiceImpl.class).loadUserByUsername(email);
 
-            if (jwtService.validateToken(token, userDetails)) {
+            if (!jwtService.isTokenExpired(token)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
