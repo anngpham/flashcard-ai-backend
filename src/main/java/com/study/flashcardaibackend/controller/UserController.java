@@ -35,7 +35,7 @@ public class UserController {
         return new ResponseEntity<>("Successfully registered", HttpStatus.CREATED);
     }
 
-    @PostMapping("login")
+    @PostMapping("/login")
     public String login(@RequestBody User user) {
 
         Authentication authentication = authenticationManager
