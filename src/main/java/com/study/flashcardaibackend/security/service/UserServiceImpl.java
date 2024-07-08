@@ -1,6 +1,7 @@
 package com.study.flashcardaibackend.security.service;
 
 import com.study.flashcardaibackend.dao.UserRepository;
+import com.study.flashcardaibackend.dto.RegistrationRequest;
 import com.study.flashcardaibackend.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,9 +19,12 @@ public class UserServiceImpl implements UserService{
         this.userRepository = userRepository;
     }
 
+
     @Override
-    public void saveUser(User user) {
-        user.setPassword(encoder.encode(user.getPassword()));
+    public void register(RegistrationRequest registrationRequest) {
+        User user = new User();
+        user.setEmail(registrationRequest.getEmail());
+        user.setPassword(encoder.encode(registrationRequest.getPassword()));
         userRepository.save(user);
     }
 }
