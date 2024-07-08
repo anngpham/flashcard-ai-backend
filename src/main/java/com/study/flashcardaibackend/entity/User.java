@@ -41,14 +41,12 @@ public class User {
     private Role role;
 
 
-//    @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date createdAt;
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @UpdateTimestamp
-//    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
     @OneToMany(mappedBy = "ownerId")

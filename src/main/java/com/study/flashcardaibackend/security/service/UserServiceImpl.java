@@ -11,7 +11,6 @@ public class UserServiceImpl implements UserService{
 
     private UserRepository userRepository;
 
-    // add BcryptPasswordEncoder
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     @Autowired
