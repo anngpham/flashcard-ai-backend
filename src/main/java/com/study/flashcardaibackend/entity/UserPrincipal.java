@@ -8,11 +8,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 
-public class UsePrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails {
 
         private User user;
 
-        public UsePrincipal(User user) {
+        public UserPrincipal(User user) {
             this.user = user;
         }
 

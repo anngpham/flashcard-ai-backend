@@ -1,7 +1,7 @@
 package com.study.flashcardaibackend.security.service;
 
 import com.study.flashcardaibackend.dao.UserRepository;
-import com.study.flashcardaibackend.entity.UsePrincipal;
+import com.study.flashcardaibackend.entity.UserPrincipal;
 import com.study.flashcardaibackend.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
                 throw new UsernameNotFoundException("User 404");
             }
 
-            return new UsePrincipal(user);
+            return new UserPrincipal(user);
 
         }
 }
