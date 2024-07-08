@@ -42,8 +42,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("register", "login")
                         .permitAll()
-                        .requestMatchers("hello").hasRole("USER")
-                        .requestMatchers("helloStaff").hasRole("STAFF")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
