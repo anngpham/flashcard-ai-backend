@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SetCreationRequest {
+public class SetRequest {
 
     @NotBlank(message = "title not blank")
     private String title;

@@ -1,5 +1,7 @@
 package com.study.flashcardaibackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,6 +37,7 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "set_id")
+    @JsonBackReference
     private Set set;
 
     @Column(name = "is_deleted", columnDefinition = "boolean default false")
@@ -50,6 +53,7 @@ public class Question {
     private Date updatedAt;
 
     @OneToMany(mappedBy = "question")
+    @JsonManagedReference
     private List<Answer> answers;
 
 

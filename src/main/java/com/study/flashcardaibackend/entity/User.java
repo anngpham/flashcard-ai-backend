@@ -1,5 +1,6 @@
 package com.study.flashcardaibackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -47,6 +48,7 @@ public class User {
     private Date updatedAt;
 
     @OneToMany(mappedBy = "owner")
+    @JsonManagedReference
     private List<Set> sets;
 
 }

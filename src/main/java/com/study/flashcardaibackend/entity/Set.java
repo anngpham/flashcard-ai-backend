@@ -1,5 +1,7 @@
 package com.study.flashcardaibackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -34,6 +36,7 @@ public class Set {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @JsonBackReference
     private User owner;
 
     @Column(name = "is_public", columnDefinition = "boolean default false")
@@ -51,6 +54,7 @@ public class Set {
     private Date updatedAt;
 
     @OneToMany(mappedBy = "set")
+    @JsonManagedReference
     private List<Question> questions;
 
 

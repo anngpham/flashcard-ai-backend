@@ -1,6 +1,7 @@
 package com.study.flashcardaibackend.controller;
 
-import com.study.flashcardaibackend.dto.SetCreationRequest;
+import com.study.flashcardaibackend.dto.SetRequest;
+import com.study.flashcardaibackend.entity.Set;
 import com.study.flashcardaibackend.entity.UserPrincipal;
 import com.study.flashcardaibackend.service.SetService;
 import jakarta.validation.Valid;
@@ -9,11 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/set")
@@ -29,9 +28,41 @@ public class SetController {
     @PostMapping
     public ResponseEntity<String> createSet(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @RequestBody @Valid SetCreationRequest setCreationRequest) {
+            @RequestBody @Valid SetRequest setRequest) {
 
-        setService.addSet(userPrincipal.getUser(), setCreationRequest);
+        setService.createSet(userPrincipal.getUser(), setRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body("Set created");
     }
+
+    @PutMapping("/{setId}")
+    public ResponseEntity<Set> updateSet(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable UUID setId,
+            @RequestBody @Valid SetRequest setRequest) {
+
+        Set updatedSet;
+
+        try {
+            updatedSet = setService.updateSet(userPrincipal.getUser(), setRequest, setId);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedSet);
+    }
+
+    @DeleteMapping("/{setId}")
+    public ResponseEntity<String> deleteSet(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable UUID setId) {
+
+        try {
+            setService.deleteSet(userPrincipal.getUser(), setId);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("Set deleted");
+    }
+
 }
