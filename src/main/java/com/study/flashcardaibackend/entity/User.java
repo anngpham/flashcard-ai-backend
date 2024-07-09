@@ -27,9 +27,6 @@ public class User {
     @Column(name = "id")
     private UUID id;
 
-//    @Column(name = "username", unique = true)
-//    private String username;
-
     @Column(name = "email", unique = true)
     private String email;
 
@@ -49,7 +46,7 @@ public class User {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @OneToMany(mappedBy = "ownerId")
+    @OneToMany(mappedBy = "owner")
     private List<Set> sets;
 
 }

@@ -34,7 +34,7 @@ public class Set {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
-    private User ownerId;
+    private User owner;
 
     @Column(name = "is_public", columnDefinition = "boolean default false")
     private boolean isPublic;
