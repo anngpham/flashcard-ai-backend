@@ -7,7 +7,7 @@ import com.study.flashcardaibackend.entity.User;
 import java.util.UUID;
 
 public interface SetService {
-    void createSet(User user, SetRequest setRequest);
+    Set createSet(User user, SetRequest setRequest);
 
     Set getSet(User user, UUID setId);
 

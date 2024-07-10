@@ -21,14 +21,14 @@ public class SetServiceImpl implements SetService {
 
 
     @Override
-    public void createSet(User user, SetRequest setRequest) {
+    public Set createSet(User user, SetRequest setRequest) {
 
         Set set = new Set();
         set.setTitle(setRequest.getTitle());
         set.setDescription(setRequest.getDescription());
         set.setOwner(user);
 
-        setRepository.save(set);
+        return setRepository.save(set);
     }
 
     @Override

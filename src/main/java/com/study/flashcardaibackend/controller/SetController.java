@@ -26,12 +26,12 @@ public class SetController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createSet(
+    public ResponseEntity<Set> createSet(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @RequestBody @Valid SetRequest setRequest) {
 
-        setService.createSet(userPrincipal.getUser(), setRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Set created");
+        Set createdSet = setService.createSet(userPrincipal.getUser(), setRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSet);
     }
 
     @PutMapping("/{setId}")

@@ -1,8 +1,8 @@
 package com.study.flashcardaibackend.dto;
 
 import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +14,6 @@ public class SetRequest {
     private String title;
 
     @Nullable
-    @Max(value = 100, message = "description max 100 characters")
+    @Size(max = 100)
     private String description;
 }
