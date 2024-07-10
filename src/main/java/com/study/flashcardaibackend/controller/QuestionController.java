@@ -1,6 +1,7 @@
 package com.study.flashcardaibackend.controller;
 
-import com.study.flashcardaibackend.dto.QuestionRequest;
+import com.study.flashcardaibackend.dto.QuestionCreationRequest;
+import com.study.flashcardaibackend.dto.QuestionUpdateRequest;
 import com.study.flashcardaibackend.entity.Question;
 import com.study.flashcardaibackend.entity.Set;
 import com.study.flashcardaibackend.entity.UserPrincipal;
@@ -11,13 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/question")
+@RequestMapping("set/{setId}/question")
 public class QuestionController {
 
     @Autowired
@@ -30,20 +30,44 @@ public class QuestionController {
     @PostMapping
     public ResponseEntity<?> createQuestion(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @RequestBody @Valid QuestionRequest questionRequest) {
+            @PathVariable UUID setId,
+            @RequestBody @Valid QuestionCreationRequest questionCreationRequest) {
 
-        if (!questionRequest.isValidQuestion())
+        if (!questionCreationRequest.isValidQuestion())
             return ResponseEntity.badRequest().body("invalid question");
 
         Question createdQuestion;
 
         try {
-            Set set = setService.getSet(userPrincipal.getUser(), questionRequest.getSetId());
-            createdQuestion = questionService.createQuestion(set, questionRequest);
+            Set set = setService.getSet(userPrincipal.getUser(), setId);
+            createdQuestion = questionService.createQuestion(set, questionCreationRequest);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestion);
     }
+
+    @PutMapping("/{questionId}")
+    public ResponseEntity<?> updateQuestion(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable UUID questionId,
+            @PathVariable UUID setId,
+            @RequestBody @Valid QuestionUpdateRequest questionUpdateRequest) {
+
+
+        if (!setService.isUserAccessibleWithSet(userPrincipal.getUser(), setId))
+            return ResponseEntity.notFound().build();
+
+        Question updatedQuestion;
+
+        try {
+            updatedQuestion = questionService.updateQuestion(questionUpdateRequest, questionId);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(updatedQuestion);
+    }
+
 }

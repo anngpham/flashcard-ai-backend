@@ -8,11 +8,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
-public class QuestionRequest {
+public class QuestionCreationRequest {
 
     @NotBlank(message = "question title not blank")
     private String title;
@@ -22,16 +21,14 @@ public class QuestionRequest {
 
     @NotNull(message = "answers not null")
     @Valid
-    private List<AnswerRequest> answers;
+    private List<AnswerRequest> newAnswers;
 
-    @NotNull
-    private UUID setId;
 
     public boolean isValidQuestion(){
 
         int numberOfCorrectAnswers = 0;
 
-        for(AnswerRequest answer : answers){
+        for(AnswerRequest answer : newAnswers){
             if(answer.isCorrect())
                 numberOfCorrectAnswers++;
         }

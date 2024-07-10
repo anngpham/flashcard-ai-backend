@@ -35,8 +35,8 @@ public class SetServiceImpl implements SetService {
         set.setOwner(user);
 
         return setRepository.save(set);
-    }
 
+    }
     @Override
     public Set getSet(User user, UUID setId) {
 
