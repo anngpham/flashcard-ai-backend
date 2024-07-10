@@ -42,6 +42,8 @@ public class QuestionController {
             Set set = setService.getSet(userPrincipal.getUser(), setId);
             createdQuestion = questionService.createQuestion(set, questionCreationRequest);
         } catch (RuntimeException e) {
+
+            e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
 
@@ -68,6 +70,25 @@ public class QuestionController {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedQuestion);
+    }
+
+    @DeleteMapping("/{questionId}")
+    public ResponseEntity<?> deleteQuestion(
+            @AuthenticationPrincipal UserPrincipal userPrincipal,
+            @PathVariable UUID questionId,
+            @PathVariable UUID setId) {
+
+        if (!setService.isUserAccessibleWithSet(userPrincipal.getUser(), setId))
+            return ResponseEntity.notFound().build();
+
+        try {
+            questionService.deleteQuestion(questionId);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body("Question deleted");
+
     }
 
 }

@@ -10,6 +10,7 @@ import com.study.flashcardaibackend.entity.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -34,7 +35,7 @@ public class QuestionServiceImpl implements QuestionService{
             answer.setCorrect(answerRequest.isCorrect());
             answer.setQuestion(question);
 
-            answerRepository.save(answer);
+            question.addAnswer(answer);
         }
 
         question.setSet(set);
@@ -80,6 +81,17 @@ public class QuestionServiceImpl implements QuestionService{
             }
         }
         return questionRepository.save(question);
+    }
+
+    @Override
+    public void deleteQuestion(UUID questionId) {
+        Question question = questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
+        List<Answer> answers = question.getAnswers();
+        answers.forEach(answer -> answer.setDeleted(true));
+        question.setDeleted(true);
+
+        questionRepository.save(question);
+
     }
 
 

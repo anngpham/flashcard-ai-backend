@@ -13,4 +13,6 @@ public interface QuestionService {
     Question createQuestion(Set set, QuestionCreationRequest questionCreationRequest);
 
     Question updateQuestion(QuestionUpdateRequest questionUpdateRequest, UUID questionId);
+
+    void deleteQuestion(UUID questionId);
 }
