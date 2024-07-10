@@ -53,7 +53,9 @@ public class Set {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date updatedAt;
 
-    @OneToMany(mappedBy = "set")
+    @OneToMany(mappedBy = "set",
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     @JsonManagedReference
     private List<Question> questions;
 

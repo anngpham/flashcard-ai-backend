@@ -14,4 +14,6 @@ public interface SetService {
     Set updateSet(User user, SetRequest setRequest, UUID setId);
 
     void deleteSet(User user, UUID setId);
+
+    boolean isUserAccessibleWithSet(User user, UUID setId);
 }
