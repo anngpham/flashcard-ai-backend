@@ -50,12 +50,12 @@ public class QuestionServiceImpl implements QuestionService{
     @Transactional
     public Question updateQuestion(QuestionUpdateRequest questionUpdateRequest, UUID questionId) {
 
-        System.out.println(questionUpdateRequest);
-
         Question question = questionRepository.findById(questionId).orElseThrow(() -> new RuntimeException("Question not found"));
 
         question.setTitle(questionUpdateRequest.getTitle());
         question.setQuestionType(QuestionType.valueOf(questionUpdateRequest.getQuestionType()));
+
+        List<Answer> updatedAnswers = new ArrayList<>();
 
         if (questionUpdateRequest.getNewAnswers() != null) {
             for (AnswerCreationRequest newAnswer : questionUpdateRequest.getNewAnswers()) {
@@ -64,11 +64,11 @@ public class QuestionServiceImpl implements QuestionService{
                 answer.setCorrect(newAnswer.isCorrect());
                 answer.setQuestion(question);
 
-                answerRepository.save(answer);
+                insertToUpdatedAnswers(updatedAnswers, answer);
             }
         }
 
-        List<Answer> updatedAnswers = new ArrayList<>();
+
         if (questionUpdateRequest.getDeleteAnswers() != null) {
             for (UUID id : questionUpdateRequest.getDeleteAnswers()) {
                 Answer answer = answerRepository.findById(id).orElseThrow(() -> new RuntimeException("Answer not found"));
@@ -107,8 +107,13 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     private void insertToUpdatedAnswers (List<Answer> updatedAnswers, Answer answer) {
+
+        if (answer.getId() == null) {
+            updatedAnswers.add(answer);
+            return;
+        }
         for (Answer updatedAnswer : updatedAnswers) {
-            if(updatedAnswer.getId().equals(answer.getId())) {
+            if((updatedAnswer.getId() != null) && updatedAnswer.getId().equals(answer.getId())) {
                 throw new RuntimeException("Answer already existed");
             }
         }
