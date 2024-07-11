@@ -26,7 +26,6 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
-    // create a question and add it to the set
     @PostMapping
     public ResponseEntity<?> createQuestion(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
@@ -42,8 +41,6 @@ public class QuestionController {
             Set set = setService.getSet(userPrincipal.getUser(), setId);
             createdQuestion = questionService.createQuestion(set, questionCreationRequest);
         } catch (RuntimeException e) {
-
-            e.printStackTrace();
             return ResponseEntity.notFound().build();
         }
 
