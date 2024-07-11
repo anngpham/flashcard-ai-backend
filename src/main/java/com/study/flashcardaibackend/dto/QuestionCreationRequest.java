@@ -1,5 +1,6 @@
 package com.study.flashcardaibackend.dto;
 
+import com.study.flashcardaibackend.entity.QuestionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public class QuestionCreationRequest {
     @NotBlank(message = "question title not blank")
     private String title;
 
-    @Pattern(regexp = "TEXT_FILL|MULTIPLE_CHOICE|CHECKBOXES", message = "question type must be TEXT_FILL, MULTIPLE_CHOICE, or CHECKBOXES")
+    @Pattern(regexp = QuestionType.regex, message = QuestionType.regexMessage)
     private String questionType;
 
     @NotNull(message = "answers not null")
