@@ -1,5 +1,6 @@
 package com.study.flashcardaibackend.dto;
 
+import com.study.flashcardaibackend.entity.QuestionType;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +20,7 @@ public class QuestionUpdateRequest {
     @NotBlank(message = "question title not blank")
     private String title;
 
-    @Pattern(regexp = "TEXT_FILL|MULTIPLE_CHOICE|CHECKBOXES", message = "question type must be TEXT_FILL, MULTIPLE_CHOICE, or CHECKBOXES")
+    @Pattern(regexp = QuestionType.regex, message = QuestionType.regexMessage)
     private String questionType;
 
 
