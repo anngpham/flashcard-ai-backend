@@ -76,8 +76,10 @@ public class QuestionServiceImpl implements QuestionService{
         if (questionUpdateRequest.getUpdateAnswers() != null) {
             for (AnswerUpdateRequest updateAnswer : questionUpdateRequest.getUpdateAnswers()) {
                 Answer answer = answerRepository.findById(updateAnswer.getId()).orElseThrow(() -> new RuntimeException("Answer not found"));
-                answer.setContent(updateAnswer.getContent());
-                answer.setCorrect(updateAnswer.isCorrect());
+                if (updateAnswer.getContent() != null)
+                    answer.setContent(updateAnswer.getContent());
+                if (updateAnswer.getIsCorrect() != null)
+                    answer.setCorrect(updateAnswer.getIsCorrect());
             }
         }
         return questionRepository.save(question);
