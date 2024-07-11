@@ -29,10 +29,10 @@ public class QuestionServiceImpl implements QuestionService{
         question.setTitle(questionCreationRequest.getTitle());
         question.setQuestionType(QuestionType.valueOf(questionCreationRequest.getQuestionType()));
 
-        for (AnswerRequest answerRequest : questionCreationRequest.getNewAnswers()){
+        for (AnswerCreationRequest answerCreationRequest : questionCreationRequest.getNewAnswers()){
             Answer answer = new Answer();
-            answer.setContent(answerRequest.getContent());
-            answer.setCorrect(answerRequest.isCorrect());
+            answer.setContent(answerCreationRequest.getContent());
+            answer.setCorrect(answerCreationRequest.isCorrect());
             answer.setQuestion(question);
 
             question.addAnswer(answer);
@@ -55,7 +55,7 @@ public class QuestionServiceImpl implements QuestionService{
         question.setQuestionType(QuestionType.valueOf(questionUpdateRequest.getQuestionType()));
 
         if (questionUpdateRequest.getNewAnswers() != null) {
-            for (AnswerRequest newAnswer : questionUpdateRequest.getNewAnswers()) {
+            for (AnswerCreationRequest newAnswer : questionUpdateRequest.getNewAnswers()) {
                 Answer answer = new Answer();
                 answer.setContent(newAnswer.getContent());
                 answer.setCorrect(newAnswer.isCorrect());

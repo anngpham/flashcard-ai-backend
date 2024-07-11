@@ -21,17 +21,12 @@ public class QuestionCreationRequest {
 
     @NotNull(message = "answers not null")
     @Valid
-    private List<AnswerRequest> newAnswers;
+    private List<AnswerCreationRequest> newAnswers;
 
 
-    public boolean isValidQuestion(){
+    public boolean isValid(){
 
-        int numberOfCorrectAnswers = 0;
-
-        for(AnswerRequest answer : newAnswers){
-            if(answer.isCorrect())
-                numberOfCorrectAnswers++;
-        }
+        int numberOfCorrectAnswers = numberOfCorrectAnswers(newAnswers);
 
         // check Question is valid or not
         if (numberOfCorrectAnswers == 0){
@@ -39,5 +34,15 @@ public class QuestionCreationRequest {
         } else if((questionType.equals("TEXT_FILL") || questionType.equals("MULTIPLE_CHOICE")) && numberOfCorrectAnswers == 1){
             return true;
         } else return questionType.equals("CHECKBOXES") && numberOfCorrectAnswers >= 1;
+    }
+
+    private int numberOfCorrectAnswers(List<AnswerCreationRequest> answers) {
+
+        int count = 0;
+        for(AnswerCreationRequest answer : answers){
+            if(answer.isCorrect())
+                count++;
+        }
+        return count;
     }
 }

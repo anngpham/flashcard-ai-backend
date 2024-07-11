@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AnswerRequest {
+public class AnswerCreationRequest {
 
     @NotBlank(message = "answer content not blank")
     private String content;

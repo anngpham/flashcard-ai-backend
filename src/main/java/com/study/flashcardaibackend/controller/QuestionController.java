@@ -33,7 +33,7 @@ public class QuestionController {
             @PathVariable UUID setId,
             @RequestBody @Valid QuestionCreationRequest questionCreationRequest) {
 
-        if (!questionCreationRequest.isValidQuestion())
+        if (!questionCreationRequest.isValid())
             return ResponseEntity.badRequest().body("invalid question");
 
         Question createdQuestion;

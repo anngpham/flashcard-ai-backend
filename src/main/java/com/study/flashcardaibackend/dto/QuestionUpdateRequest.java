@@ -25,7 +25,7 @@ public class QuestionUpdateRequest {
 
     @Nullable
     @Valid
-    private List<AnswerRequest> newAnswers;
+    private List<AnswerCreationRequest> newAnswers;
 
     @Nullable
     @Valid
