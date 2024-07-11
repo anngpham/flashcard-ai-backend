@@ -1,5 +1,6 @@
 package com.study.flashcardaibackend.dto;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -16,13 +17,14 @@ public class AnswerUpdateRequest {
     @NotNull(message = "id not null")
     private UUID id;
 
-    @NotBlank(message = "answer content not blank")
+
+    @Nullable
     private String content;
 
-    @NotNull(message = "isCorrect not null")
+    @Nullable
     private Boolean isCorrect;
 
     public boolean isCorrect(){
-        return isCorrect;
+        return Boolean.TRUE.equals(isCorrect);
     }
 }
