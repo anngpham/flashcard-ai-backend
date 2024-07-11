@@ -60,10 +60,11 @@ public class Question {
     private List<Answer> answers;
 
 
-    public void addAnswer(Answer answer) {
+    public Answer addAnswer(Answer answer) {
         if (answers == null) {
             answers = new ArrayList<>();
         }
         answers.add(answer);
+        return answer;
     }
 }
