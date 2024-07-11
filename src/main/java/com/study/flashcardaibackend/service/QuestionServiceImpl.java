@@ -9,7 +9,9 @@ import com.study.flashcardaibackend.entity.QuestionType;
 import com.study.flashcardaibackend.entity.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +47,7 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
+    @Transactional
     public Question updateQuestion(QuestionUpdateRequest questionUpdateRequest, UUID questionId) {
 
         System.out.println(questionUpdateRequest);
@@ -65,11 +68,13 @@ public class QuestionServiceImpl implements QuestionService{
             }
         }
 
+        List<Answer> updatedAnswers = new ArrayList<>();
         if (questionUpdateRequest.getDeleteAnswers() != null) {
             for (UUID id : questionUpdateRequest.getDeleteAnswers()) {
                 Answer answer = answerRepository.findById(id).orElseThrow(() -> new RuntimeException("Answer not found"));
                 answer.setDeleted(true);
-                answerRepository.save(answer);
+
+                insertToUpdatedAnswers(updatedAnswers, answer);
             }
         }
 
@@ -80,8 +85,13 @@ public class QuestionServiceImpl implements QuestionService{
                     answer.setContent(updateAnswer.getContent());
                 if (updateAnswer.getIsCorrect() != null)
                     answer.setCorrect(updateAnswer.getIsCorrect());
+
+                insertToUpdatedAnswers(updatedAnswers, answer);
             }
         }
+
+        answerRepository.saveAll(updatedAnswers);
+
         return questionRepository.save(question);
     }
 
@@ -94,6 +104,16 @@ public class QuestionServiceImpl implements QuestionService{
 
         questionRepository.save(question);
 
+    }
+
+    private void insertToUpdatedAnswers (List<Answer> updatedAnswers, Answer answer) {
+        for (Answer updatedAnswer : updatedAnswers) {
+            if(updatedAnswer.getId().equals(answer.getId())) {
+                throw new RuntimeException("Answer already existed");
+            }
+        }
+
+        updatedAnswers.add(answer);
     }
 
 
