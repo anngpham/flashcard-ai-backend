@@ -1,9 +1,14 @@
 package com.study.flashcardaibackend.controller;
 
-import com.study.flashcardaibackend.dto.SetRequest;
-import com.study.flashcardaibackend.entity.Set;
-import com.study.flashcardaibackend.entity.UserPrincipal;
-import com.study.flashcardaibackend.service.SetService;
+import com.study.flashcardaibackend.constant.ErrorMessage;
+import com.study.flashcardaibackend.constant.PathConstants;
+import com.study.flashcardaibackend.dto.set.SetCreationRequestBodyDTO;
+import com.study.flashcardaibackend.dto.set.SetCreationResponseDTO;
+import com.study.flashcardaibackend.dto.set.SetUpdateRequestBodyDTO;
+import com.study.flashcardaibackend.exception.HttpRuntimeException;
+import com.study.flashcardaibackend.model.set.Set;
+import com.study.flashcardaibackend.model.user.UserPrincipal;
+import com.study.flashcardaibackend.service.set.SetService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/set")
+@RequestMapping(PathConstants.SET)
 public class SetController {
 
-    private SetService setService;
+    private final SetService setService;
 
     @Autowired
     public SetController(SetService setService) {
@@ -25,43 +30,41 @@ public class SetController {
     }
 
     @PostMapping
-    public ResponseEntity<Set> createSet(
+    public ResponseEntity<SetCreationResponseDTO> createSet(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
-            @RequestBody @Valid SetRequest setRequest) {
+            @RequestBody @Valid SetCreationRequestBodyDTO setCreationBody) {
 
-        Set createdSet = setService.createSet(userPrincipal.getUser(), setRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdSet);
+        Set createdSet = setService.createSet(setCreationBody, userPrincipal.getUser().getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new SetCreationResponseDTO(createdSet)
+        );
     }
 
-    @PutMapping("/{setId}")
-    public ResponseEntity<Set> updateSet(
+    @PutMapping(PathConstants.SET_ID)
+    public ResponseEntity<?> updateSet(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable UUID setId,
-            @RequestBody @Valid SetRequest setRequest) {
+            @RequestBody @Valid SetUpdateRequestBodyDTO setUpdateBody) {
 
-        Set updatedSet;
-
-        try {
-            updatedSet = setService.updateSet(userPrincipal.getUser(), setRequest, setId);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+        if (!setService.isSetBelongToUser(setId, userPrincipal.getUser().getId())) {
+            throw new HttpRuntimeException(HttpStatus.FORBIDDEN, ErrorMessage.SET_NOT_BELONG_TO_USER);
         }
 
+        Set updatedSet = setService.updateSet(setId, setUpdateBody);
         return ResponseEntity.status(HttpStatus.OK).body(updatedSet);
     }
 
-    @DeleteMapping("/{setId}")
-    public ResponseEntity<String> deleteSet(
+    @DeleteMapping(PathConstants.SET_ID)
+    public ResponseEntity<?> deleteSet(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable UUID setId) {
 
-        try {
-            setService.deleteSet(userPrincipal.getUser(), setId);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+        if (!setService.isSetBelongToUser(setId, userPrincipal.getUser().getId())) {
+            throw new HttpRuntimeException(HttpStatus.FORBIDDEN, ErrorMessage.SET_NOT_BELONG_TO_USER);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body("Set deleted");
+        setService.deleteSet(setId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

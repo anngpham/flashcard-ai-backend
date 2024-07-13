@@ -1,12 +1,10 @@
 package com.study.flashcardaibackend.controller;
 
-import com.study.flashcardaibackend.dto.QuestionCreationRequest;
-import com.study.flashcardaibackend.dto.QuestionUpdateRequest;
-import com.study.flashcardaibackend.entity.Question;
-import com.study.flashcardaibackend.entity.Set;
-import com.study.flashcardaibackend.entity.UserPrincipal;
-import com.study.flashcardaibackend.service.QuestionService;
-import com.study.flashcardaibackend.service.SetService;
+import com.study.flashcardaibackend.dto.question.QuestionCreationRequestDTO;
+import com.study.flashcardaibackend.dto.question.QuestionUpdateRequestDTO;
+import com.study.flashcardaibackend.model.question.Question;
+import com.study.flashcardaibackend.model.user.UserPrincipal;
+import com.study.flashcardaibackend.service.question.QuestionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,34 +15,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("set/{setId}/question")
+@RequestMapping("/sets/{setId}/questions")
 public class QuestionController {
+    private final QuestionService questionService;
 
     @Autowired
-    private SetService setService;
-
-    @Autowired
-    private QuestionService questionService;
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
+    }
 
     @PostMapping
     public ResponseEntity<?> createQuestion(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable UUID setId,
-            @RequestBody @Valid QuestionCreationRequest questionCreationRequest) {
-
-        if (!questionCreationRequest.isValid())
-            return ResponseEntity.badRequest().body("invalid question");
-
-        Question createdQuestion;
-
-        try {
-            Set set = setService.getSet(userPrincipal.getUser(), setId);
-            createdQuestion = questionService.createQuestion(set, questionCreationRequest);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestion);
+            @RequestBody @Valid QuestionCreationRequestDTO questionCreationRequest) {
+        Question createdQuestionEntity = questionService.createQuestion(setId, questionCreationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestionEntity);
     }
 
     @PutMapping("/{questionId}")
@@ -52,21 +38,11 @@ public class QuestionController {
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @PathVariable UUID questionId,
             @PathVariable UUID setId,
-            @RequestBody @Valid QuestionUpdateRequest questionUpdateRequest) {
+            @RequestBody @Valid QuestionUpdateRequestDTO questionUpdateRequest) {
 
-
-        if (!setService.isUserAccessibleWithSet(userPrincipal.getUser(), setId))
-            return ResponseEntity.notFound().build();
-
-        Question updatedQuestion;
-
-        try {
-            updatedQuestion = questionService.updateQuestion(questionUpdateRequest, questionId);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-
+        Question updatedQuestion = questionService.updateQuestion(questionUpdateRequest, questionId);
         return ResponseEntity.status(HttpStatus.OK).body(updatedQuestion);
+
     }
 
     @DeleteMapping("/{questionId}")
@@ -75,17 +51,8 @@ public class QuestionController {
             @PathVariable UUID questionId,
             @PathVariable UUID setId) {
 
-        if (!setService.isUserAccessibleWithSet(userPrincipal.getUser(), setId))
-            return ResponseEntity.notFound().build();
-
-        try {
-            questionService.deleteQuestion(questionId);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body("Question deleted");
+        questionService.deleteQuestion(questionId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
-
 }
