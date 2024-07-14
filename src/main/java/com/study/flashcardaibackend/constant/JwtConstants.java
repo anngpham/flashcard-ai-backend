@@ -2,7 +2,7 @@ package com.study.flashcardaibackend.constant;
 
 public class JwtConstants {
 
-    public static final String AUTH_HEADER = "Authorization";
+    public static final String AUTH_HEADER = "Authorization"; // TODO(anpn)
 
     public static final String TOKEN_PREFIX = "Bearer";
 

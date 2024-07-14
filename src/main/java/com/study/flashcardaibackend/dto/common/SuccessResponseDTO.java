@@ -5,19 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResponseDTO<T> {
+public class SuccessResponseDTO<T> {
     private boolean isSuccess = true;
     private T data;
 
-    public ResponseDTO() {
+    public SuccessResponseDTO() {
     }
 
-    public ResponseDTO(T data) {
+    public SuccessResponseDTO(T data) {
         this.data = data;
-    }
-
-    public ResponseDTO(T data, boolean isSuccess) {
-        this.data = data;
-        this.isSuccess = isSuccess;
     }
 }

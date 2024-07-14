@@ -25,7 +25,6 @@ public class QuestionUpdateRequestDTO {
     @Pattern(regexp = QuestionType.regex, message = QuestionType.regexMessage)
     private String questionType;
 
-
     @Nullable
     @Valid
     private List<AnswerCreationRequestDTO> newAnswers;

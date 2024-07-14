@@ -7,12 +7,11 @@ import com.study.flashcardaibackend.model.set.Set;
 import java.util.UUID;
 
 public interface SetService {
-    boolean isSetBelongToUser(UUID setId, UUID userId);
+    Set getSet(UUID setId);
 
     Set createSet(SetCreationRequestBodyDTO setCreationBody, UUID userId);
 
     Set updateSet(UUID setId, SetUpdateRequestBodyDTO setUpdateRequestBody);
 
     void deleteSet(UUID setId);
-
 }

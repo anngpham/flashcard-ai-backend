@@ -9,7 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SetCreationRequestBodyDTO {
-
     @NotBlank(message = "title not blank")
     @Size(max = 80)
     private String title;

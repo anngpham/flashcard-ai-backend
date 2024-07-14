@@ -17,8 +17,8 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.study.flashcardaibackend.constant.ErrorMessage.API_NOT_FOUND;
-import static com.study.flashcardaibackend.constant.ErrorMessage.INTERNAL_SERVER_ERROR;
+import static com.study.flashcardaibackend.constant.ErrorConstants.API_NOT_FOUND;
+import static com.study.flashcardaibackend.constant.ErrorConstants.INTERNAL_SERVER_ERROR;
 
 @Slf4j
 @ControllerAdvice

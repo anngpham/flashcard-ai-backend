@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -25,7 +26,7 @@ import java.util.UUID;
 @DynamicInsert
 @DynamicUpdate
 @ToString
-public class SetEntity {
+public class SetEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

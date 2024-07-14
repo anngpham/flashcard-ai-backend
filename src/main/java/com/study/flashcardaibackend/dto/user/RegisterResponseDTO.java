@@ -1,15 +1,25 @@
 package com.study.flashcardaibackend.dto.user;
 
-import lombok.AllArgsConstructor;
+import com.study.flashcardaibackend.dto.common.SuccessResponseDTO;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class RegisterResponseDTO {
-    private String message;
-    private String jwtToken;
+class RegisterResponseData {
+    String jwtToken;
+    String email;
+
+    public RegisterResponseData(String jwtToken, String email) {
+        this.jwtToken = jwtToken;
+        this.email = email;
+    }
+}
+
+@Getter
+@Setter
+public class RegisterResponseDTO extends SuccessResponseDTO<RegisterResponseData> {
+    public RegisterResponseDTO(String jwtToken, String email) {
+        super(new RegisterResponseData(jwtToken, email));
+    }
 }

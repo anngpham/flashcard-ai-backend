@@ -5,8 +5,15 @@ import com.study.flashcardaibackend.model.common.ValidationDetail;
 
 import java.util.List;
 
+
 public final class ValidationUtil {
-    public static ValidationDetail checkQuestionHasValidAnswers(QuestionType questionType, List<IValidatableAnswer> answers) {
+    private abstract class AbstractValidatableAnswer {
+        abstract boolean getIsCorrect();
+
+        abstract boolean getIsDeleted();
+    }
+    
+    public static ValidationDetail checkQuestionHasValidAnswers(QuestionType questionType, List<AbstractValidatableAnswer> answers) {
         int numberOfAnswers = answers.size();
         int numberOfCorrectAnswers = (int) answers.stream().filter(a -> a.getIsCorrect() && !a.getIsDeleted()).count();
         switch (questionType) {
@@ -34,5 +41,6 @@ public final class ValidationUtil {
         }
         return new ValidationDetail(true, null);
     }
+
 
 }
