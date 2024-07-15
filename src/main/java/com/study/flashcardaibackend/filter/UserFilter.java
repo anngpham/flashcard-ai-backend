@@ -64,7 +64,7 @@ public class UserFilter extends OncePerRequestFilter {
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
-        String authenHeader = request.getHeader(HEADER_AUTHORIZATION);
+        String authenHeader = request.getHeader(JwtConstants.AUTH_HEADER);
         if (authenHeader == null) {
             throw new HttpRuntimeException(HttpStatus.UNAUTHORIZED, ErrorConstants.HEADER_TOKEN_NOT_FOUND);
         }
