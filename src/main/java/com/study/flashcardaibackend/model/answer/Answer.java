@@ -20,7 +20,7 @@ public class Answer {
 
     private boolean isCorrect;
 
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     private Date createdAt;
 
@@ -28,12 +28,12 @@ public class Answer {
 
     public static Answer fromEntity(AnswerEntity answerEntity) {
         return new Answer(
-            answerEntity.getId(),
-            answerEntity.getContent(),
-            answerEntity.isCorrect(),
-            answerEntity.isDeleted(),
-            answerEntity.getCreatedAt(),
-            answerEntity.getUpdatedAt()
+                answerEntity.getId(),
+                answerEntity.getContent(),
+                answerEntity.getIsCorrect(),
+                answerEntity.getIsDeleted(),
+                answerEntity.getCreatedAt(),
+                answerEntity.getUpdatedAt()
         );
     }
 }

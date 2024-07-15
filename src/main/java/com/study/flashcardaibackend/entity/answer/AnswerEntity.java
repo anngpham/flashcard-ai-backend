@@ -2,6 +2,7 @@ package com.study.flashcardaibackend.entity.answer;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.study.flashcardaibackend.entity.question.QuestionEntity;
+import com.study.flashcardaibackend.util.IValidatableAnswer;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -22,7 +23,7 @@ import java.util.UUID;
 @DynamicInsert
 @DynamicUpdate
 @ToString
-public class AnswerEntity {
+public class AnswerEntity implements IValidatableAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", columnDefinition = "uuid DEFAULT gen_random_uuid()")
@@ -52,5 +53,15 @@ public class AnswerEntity {
 
     public boolean equals(AnswerEntity ans) {
         return this.getId().equals(ans.getId());
+    }
+
+    @Override
+    public boolean getIsCorrect() {
+        return this.isCorrect;
+    }
+
+    @Override
+    public boolean getIsDeleted() {
+        return this.isDeleted;
     }
 }

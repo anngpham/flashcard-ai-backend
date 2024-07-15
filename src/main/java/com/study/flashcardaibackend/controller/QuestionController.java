@@ -1,10 +1,11 @@
 package com.study.flashcardaibackend.controller;
 
 import com.study.flashcardaibackend.constant.PathConstants;
-import com.study.flashcardaibackend.dto.common.SuccessResponseDTO;
 import com.study.flashcardaibackend.dto.question.QuestionCreationBodyDTO;
+import com.study.flashcardaibackend.dto.question.QuestionCreationResponse;
 import com.study.flashcardaibackend.dto.question.QuestionUpdateBodyDTO;
-import com.study.flashcardaibackend.model.question.Question;
+import com.study.flashcardaibackend.dto.question.QuestionUpdateResponse;
+import com.study.flashcardaibackend.model.question.QuestionDetail;
 import com.study.flashcardaibackend.service.question.QuestionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +27,20 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDTO<Question>> createQuestion(
+    public ResponseEntity<QuestionCreationResponse> createQuestion(
             @PathVariable UUID setId,
             @RequestBody @Valid QuestionCreationBodyDTO questionCreationBody) {
-        Question createdQuestion = questionService.createQuestion(questionCreationBody, setId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseDTO<Question>(createdQuestion));
+        QuestionDetail createdQuestion = questionService.createQuestion(questionCreationBody, setId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new QuestionCreationResponse(createdQuestion));
     }
 
     @PutMapping(PathConstants.QUESTION_ID)
-    public ResponseEntity<Question> updateQuestion(
+    public ResponseEntity<QuestionUpdateResponse> updateQuestion(
             @PathVariable UUID setId,
             @PathVariable UUID questionId,
             @RequestBody @Valid QuestionUpdateBodyDTO questionUpdateBody) {
-        Question updatedQuestion = questionService.updateQuestion(questionUpdateBody, questionId);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedQuestion);
+        QuestionDetail updatedQuestion = questionService.updateQuestion(questionUpdateBody, questionId);
+        return ResponseEntity.status(HttpStatus.OK).body(new QuestionUpdateResponse(updatedQuestion));
 
     }
 

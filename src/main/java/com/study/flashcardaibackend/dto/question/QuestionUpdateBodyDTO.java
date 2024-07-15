@@ -5,7 +5,6 @@ import com.study.flashcardaibackend.dto.answer.AnswerUpdateBodyDTO;
 import com.study.flashcardaibackend.enums.QuestionType;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,10 +18,11 @@ import java.util.UUID;
 @ToString
 public class QuestionUpdateBodyDTO {
 
-    @NotBlank(message = "question title not blank")
+    @Nullable
     private String title;
 
     @Pattern(regexp = QuestionType.regex, message = QuestionType.regexMessage)
+    @Nullable
     private String questionType;
 
     @Nullable

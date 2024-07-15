@@ -7,13 +7,8 @@ import java.util.List;
 
 
 public final class ValidationUtil {
-    private abstract class AbstractValidatableAnswer {
-        abstract boolean getIsCorrect();
 
-        abstract boolean getIsDeleted();
-    }
-    
-    public static ValidationDetail checkQuestionHasValidAnswers(QuestionType questionType, List<AbstractValidatableAnswer> answers) {
+    public static <T extends IValidatableAnswer> ValidationDetail checkQuestionHasValidAnswers(QuestionType questionType, List<T> answers) {
         int numberOfAnswers = answers.size();
         int numberOfCorrectAnswers = (int) answers.stream().filter(a -> a.getIsCorrect() && !a.getIsDeleted()).count();
         switch (questionType) {

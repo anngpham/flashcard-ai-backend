@@ -5,6 +5,7 @@ import com.study.flashcardaibackend.constant.PathConstants;
 import com.study.flashcardaibackend.dto.set.SetCreationBodyDTO;
 import com.study.flashcardaibackend.dto.set.SetCreationResponseDTO;
 import com.study.flashcardaibackend.dto.set.SetUpdateBodyDTO;
+import com.study.flashcardaibackend.dto.set.SetUpdateResponseDTO;
 import com.study.flashcardaibackend.model.set.Set;
 import com.study.flashcardaibackend.service.set.SetService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,11 +38,11 @@ public class SetController {
     }
 
     @PutMapping(PathConstants.SET_ID)
-    public ResponseEntity<Set> updateSet(
+    public ResponseEntity<SetUpdateResponseDTO> updateSet(
             @PathVariable UUID setId,
             @RequestBody @Valid SetUpdateBodyDTO setUpdateBody) {
         Set updatedSet = setService.updateSet(setId, setUpdateBody);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedSet);
+        return ResponseEntity.status(HttpStatus.OK).body(new SetUpdateResponseDTO(updatedSet));
     }
 
     @DeleteMapping(PathConstants.SET_ID)

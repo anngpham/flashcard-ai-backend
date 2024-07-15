@@ -3,15 +3,16 @@ package com.study.flashcardaibackend.service.question;
 import com.study.flashcardaibackend.dto.question.QuestionCreationBodyDTO;
 import com.study.flashcardaibackend.dto.question.QuestionUpdateBodyDTO;
 import com.study.flashcardaibackend.model.question.Question;
+import com.study.flashcardaibackend.model.question.QuestionDetail;
 
 import java.util.UUID;
 
 public interface QuestionService {
 
 
-    Question createQuestion(QuestionCreationBodyDTO questionCreationBody, UUID setId);
+    QuestionDetail createQuestion(QuestionCreationBodyDTO questionCreationBody, UUID setId);
 
-    Question updateQuestion(QuestionUpdateBodyDTO questionUpdateBody, UUID questionId);
+    QuestionDetail updateQuestion(QuestionUpdateBodyDTO questionUpdateBody, UUID questionId);
 
     void deleteQuestion(UUID questionId);
 

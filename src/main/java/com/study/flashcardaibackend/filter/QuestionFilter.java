@@ -92,7 +92,7 @@ public class QuestionFilter extends OncePerRequestFilter {
         if (!question.getSetId().equals(setId)) {
             throw new HttpRuntimeException(HttpStatus.FORBIDDEN, ErrorConstants.QUESTION_NOT_BELONG_TO_SET);
         }
-        if (question.isDeleted()) {
+        if (question.getIsDeleted()) {
             throw new HttpRuntimeException(HttpStatus.NOT_FOUND, ErrorConstants.QUESTION_IS_DELETED);
         }
     }

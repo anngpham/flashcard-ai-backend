@@ -16,8 +16,9 @@ public class QuestionDetail extends Question {
     List<Answer> answers;
 
     public QuestionDetail(Question question, List<Answer> answers) {
-        super(question.getId(), question.getTitle(), question.isDeleted(),
+        super(question.getId(), question.getTitle(), question.getIsDeleted(),
                 question.getQuestionType(), question.getSetId(), question.getCreatedAt(), question.getUpdatedAt());
         this.answers = answers;
     }
+
 }

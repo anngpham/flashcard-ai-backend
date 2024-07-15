@@ -20,7 +20,7 @@ public class Question {
 
     private String title;
 
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     private QuestionType questionType;
 
@@ -32,13 +32,13 @@ public class Question {
 
     public static Question fromEntity(QuestionEntity questionEntity) {
         return new Question(
-            questionEntity.getId(),
-            questionEntity.getTitle(),
-            questionEntity.isDeleted(),
-            questionEntity.getQuestionType(),
-            questionEntity.getSet().getId(),
-            questionEntity.getCreatedAt(),
-            questionEntity.getUpdatedAt()
+                questionEntity.getId(),
+                questionEntity.getTitle(),
+                questionEntity.isDeleted(),
+                questionEntity.getQuestionType(),
+                questionEntity.getSet().getId(),
+                questionEntity.getCreatedAt(),
+                questionEntity.getUpdatedAt()
         );
     }
 
