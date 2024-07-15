@@ -45,7 +45,7 @@ public class QuestionFilter extends OncePerRequestFilter {
     // Allow filter running in all /api/sets/*/questions/* routes except: /api/sets/*/questions/
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !this.isQuestionDetailRoute(request); //TODO(anpn): check
+        return !this.isQuestionDetailRoute(request);
     }
 
     @Override

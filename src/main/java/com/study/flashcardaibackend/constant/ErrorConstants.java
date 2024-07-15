@@ -19,7 +19,7 @@ public class ErrorConstants {
 
     public static final String QUESTION_NOT_BELONG_TO_SET = "Question not belong to set";
     public static final String QUESTION_NOT_FOUND = "Question not found";
-    public static final String QUESTION_IS_DELETED = "Set is deleted";
+    public static final String QUESTION_IS_DELETED = "Question is deleted";
 
     public static final String ANSWER_NOT_FOUND = "Answer not found";
     public static final String ANSWER_IS_DUPLICATED = "Answer is duplicated";
