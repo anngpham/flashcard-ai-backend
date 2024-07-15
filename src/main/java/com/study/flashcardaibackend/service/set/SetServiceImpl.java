@@ -2,8 +2,8 @@ package com.study.flashcardaibackend.service.set;
 
 import com.study.flashcardaibackend.dao.SetRepository;
 import com.study.flashcardaibackend.dao.UserRepository;
-import com.study.flashcardaibackend.dto.set.SetCreationRequestBodyDTO;
-import com.study.flashcardaibackend.dto.set.SetUpdateRequestBodyDTO;
+import com.study.flashcardaibackend.dto.set.SetCreationBodyDTO;
+import com.study.flashcardaibackend.dto.set.SetUpdateBodyDTO;
 import com.study.flashcardaibackend.entity.set.SetEntity;
 import com.study.flashcardaibackend.model.set.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class SetServiceImpl implements SetService {
     }
 
     @Override
-    public Set createSet(SetCreationRequestBodyDTO setCreationBody, UUID userId) {
+    public Set createSet(SetCreationBodyDTO setCreationBody, UUID userId) {
         SetEntity setEntity = new SetEntity();
         setEntity.setTitle(setCreationBody.getTitle());
         setEntity.setDescription(setCreationBody.getDescription());
@@ -42,7 +42,7 @@ public class SetServiceImpl implements SetService {
     }
 
     @Override
-    public Set updateSet(UUID setId, SetUpdateRequestBodyDTO setUpdateBody) {
+    public Set updateSet(UUID setId, SetUpdateBodyDTO setUpdateBody) {
         SetEntity setEntity = setRepository.findById(setId).get();
         if (setUpdateBody.getTitle() != null) setEntity.setTitle(setUpdateBody.getTitle());
         if (setUpdateBody.getDescription() != null) setEntity.setDescription(setUpdateBody.getDescription());

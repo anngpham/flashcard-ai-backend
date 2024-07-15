@@ -2,8 +2,8 @@ package com.study.flashcardaibackend.service.user;
 
 import com.study.flashcardaibackend.constant.ErrorConstants;
 import com.study.flashcardaibackend.dao.UserRepository;
-import com.study.flashcardaibackend.dto.user.LoginRequestBodyDTO;
-import com.study.flashcardaibackend.dto.user.RegisterRequestBodyDTO;
+import com.study.flashcardaibackend.dto.user.LoginBodyDTO;
+import com.study.flashcardaibackend.dto.user.RegisterBodyDTO;
 import com.study.flashcardaibackend.entity.user.UserEntity;
 import com.study.flashcardaibackend.exception.HttpRuntimeException;
 import com.study.flashcardaibackend.model.user.User;
@@ -24,26 +24,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(RegisterRequestBodyDTO registerRequestBody) {
-        if (userRepository.existsByEmail(registerRequestBody.getEmail())) {
+    public User register(RegisterBodyDTO registerBody) {
+        if (userRepository.existsByEmail(registerBody.getEmail())) {
             throw new HttpRuntimeException(HttpStatus.BAD_REQUEST, ErrorConstants.EMAIL_EXISTED);
         }
         UserEntity userEntity = new UserEntity();
-        userEntity.setEmail(registerRequestBody.getEmail());
-        userEntity.setPassword(HashingUtil.hashPassword2(registerRequestBody.getPassword()));
-        userEntity.setPassword(registerRequestBody.getPassword());
+        userEntity.setEmail(registerBody.getEmail());
+        userEntity.setPassword(HashingUtil.hashPassword(registerBody.getPassword()));
         UserEntity registeredUser = userRepository.save(userEntity);
         return User.fromEntity(registeredUser);
     }
 
 
     @Override
-    public User login(LoginRequestBodyDTO loginRequestBody) {
-        Optional<UserEntity> userEntity = userRepository.findByEmail(loginRequestBody.getEmail());
+    public User login(LoginBodyDTO loginBody) {
+        Optional<UserEntity> userEntity = userRepository.findByEmail(loginBody.getEmail());
         if (userEntity.isEmpty()) {
             throw new HttpRuntimeException(HttpStatus.UNAUTHORIZED, ErrorConstants.EMAIL_NOT_FOUND);
         }
-        if (!HashingUtil.verifyPassword2(loginRequestBody.getPassword(), userEntity.get().getPassword())) {
+        if (!HashingUtil.verifyPassword(loginBody.getPassword(), userEntity.get().getPassword())) {
             throw new HttpRuntimeException(HttpStatus.UNAUTHORIZED, ErrorConstants.PASSWORD_WRONG);
         }
         return User.fromEntity(userEntity.get());

@@ -4,10 +4,10 @@ import com.study.flashcardaibackend.constant.ErrorConstants;
 import com.study.flashcardaibackend.dao.AnswerRepository;
 import com.study.flashcardaibackend.dao.QuestionRepository;
 import com.study.flashcardaibackend.dao.SetRepository;
-import com.study.flashcardaibackend.dto.answer.AnswerCreationRequestDTO;
-import com.study.flashcardaibackend.dto.answer.AnswerUpdateRequestDTO;
-import com.study.flashcardaibackend.dto.question.QuestionCreationRequestDTO;
-import com.study.flashcardaibackend.dto.question.QuestionUpdateRequestDTO;
+import com.study.flashcardaibackend.dto.answer.AnswerCreationBodyDTO;
+import com.study.flashcardaibackend.dto.answer.AnswerUpdateBodyDTO;
+import com.study.flashcardaibackend.dto.question.QuestionCreationBodyDTO;
+import com.study.flashcardaibackend.dto.question.QuestionUpdateBodyDTO;
 import com.study.flashcardaibackend.entity.answer.AnswerEntity;
 import com.study.flashcardaibackend.entity.question.QuestionEntity;
 import com.study.flashcardaibackend.enums.QuestionType;
@@ -46,17 +46,17 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public Question createQuestion(QuestionCreationRequestDTO questionCreationRequest, UUID setId) {
+    public Question createQuestion(QuestionCreationBodyDTO questionCreationBody, UUID setId) {
         QuestionEntity question = new QuestionEntity();
         question.setSet(setRepository.getReferenceById(setId));
-        question.setTitle(questionCreationRequest.getTitle());
-        question.setQuestionType(QuestionType.valueOf(questionCreationRequest.getQuestionType()));
+        question.setTitle(questionCreationBody.getTitle());
+        question.setQuestionType(QuestionType.valueOf(questionCreationBody.getQuestionType()));
 
         // TODO(anpn) how about questions.getAnswers like in delete
         // answers = question.getAnswers();
         // for each and add to answers
         // then do not need to question.setAnswers
-        question.setAnswers(questionCreationRequest.getNewAnswers().stream().map(a -> {
+        question.setAnswers(questionCreationBody.getNewAnswers().stream().map(a -> {
             AnswerEntity answer = new AnswerEntity();
             answer.setContent(a.getContent());
             answer.setCorrect(a.getIsCorrect());
@@ -73,17 +73,17 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     @Transactional
-    public Question updateQuestion(QuestionUpdateRequestDTO questionUpdateRequest, UUID questionId) {
+    public Question updateQuestion(QuestionUpdateBodyDTO questUpdateBody, UUID questionId) {
         QuestionEntity question = questionRepository.findById(questionId).get();
-        question.setTitle(questionUpdateRequest.getTitle());
-        question.setQuestionType(QuestionType.valueOf(questionUpdateRequest.getQuestionType()));
+        question.setTitle(questUpdateBody.getTitle());
+        question.setQuestionType(QuestionType.valueOf(questUpdateBody.getQuestionType()));
 
         CommonList<AnswerEntity> list = new CommonList<>();
 
 //        TODO(anpn): build array of answers (private function)
 
-        if (questionUpdateRequest.getNewAnswers() != null) {
-            for (AnswerCreationRequestDTO newAnswer : questionUpdateRequest.getNewAnswers()) {
+        if (questUpdateBody.getNewAnswers() != null) {
+            for (AnswerCreationBodyDTO newAnswer : questUpdateBody.getNewAnswers()) {
                 AnswerEntity answer = new AnswerEntity();
                 answer.setContent(newAnswer.getContent());
                 answer.setCorrect(newAnswer.getIsCorrect());
@@ -93,8 +93,8 @@ public class QuestionServiceImpl implements QuestionService {
         }
 
 
-        if (questionUpdateRequest.getDeleteAnswers() != null) {
-            for (UUID id : questionUpdateRequest.getDeleteAnswers()) {
+        if (questUpdateBody.getDeleteAnswers() != null) {
+            for (UUID id : questUpdateBody.getDeleteAnswers()) {
                 AnswerEntity answer = answerRepository.findById(id).orElseThrow(()
                         -> new HttpRuntimeException(HttpStatus.NOT_FOUND, ErrorConstants.ANSWER_NOT_FOUND));
                 answer.setDeleted(true);
@@ -102,8 +102,8 @@ public class QuestionServiceImpl implements QuestionService {
             }
         }
 
-        if (questionUpdateRequest.getUpdateAnswers() != null) {
-            for (AnswerUpdateRequestDTO updateAnswer : questionUpdateRequest.getUpdateAnswers()) {
+        if (questUpdateBody.getUpdateAnswers() != null) {
+            for (AnswerUpdateBodyDTO updateAnswer : questUpdateBody.getUpdateAnswers()) {
                 AnswerEntity answer = answerRepository.findById(updateAnswer.getId()).orElseThrow(()
                         -> new HttpRuntimeException(HttpStatus.NOT_FOUND, ErrorConstants.ANSWER_NOT_FOUND));
                 if (updateAnswer.getContent() != null)

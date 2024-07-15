@@ -1,14 +1,14 @@
 package com.study.flashcardaibackend.service.user;
 
-import com.study.flashcardaibackend.dto.user.LoginRequestBodyDTO;
-import com.study.flashcardaibackend.dto.user.RegisterRequestBodyDTO;
+import com.study.flashcardaibackend.dto.user.LoginBodyDTO;
+import com.study.flashcardaibackend.dto.user.RegisterBodyDTO;
 import com.study.flashcardaibackend.model.user.User;
 
 public interface UserService {
 
-    User register(RegisterRequestBodyDTO registrationRequest);
+    User register(RegisterBodyDTO registerBody);
 
-    User login(LoginRequestBodyDTO loginRequest);
+    User login(LoginBodyDTO loginBody);
 
     User getUserByEmail(String email);
 }
