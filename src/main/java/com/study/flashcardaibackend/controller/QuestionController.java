@@ -1,8 +1,9 @@
 package com.study.flashcardaibackend.controller;
 
+import com.study.flashcardaibackend.constant.PathConstants;
 import com.study.flashcardaibackend.dto.common.SuccessResponseDTO;
-import com.study.flashcardaibackend.dto.question.QuestionCreationRequestDTO;
-import com.study.flashcardaibackend.dto.question.QuestionUpdateRequestDTO;
+import com.study.flashcardaibackend.dto.question.QuestionCreationBodyDTO;
+import com.study.flashcardaibackend.dto.question.QuestionUpdateBodyDTO;
 import com.study.flashcardaibackend.model.question.Question;
 import com.study.flashcardaibackend.service.question.QuestionService;
 import jakarta.validation.Valid;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/sets/{setId}/questions")
+@RequestMapping(PathConstants.SET + PathConstants.SET_ID + PathConstants.QUESTION)
 public class QuestionController {
 
     private final QuestionService questionService;
@@ -25,25 +26,25 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createQuestion(
+    public ResponseEntity<SuccessResponseDTO<Question>> createQuestion(
             @PathVariable UUID setId,
-            @RequestBody @Valid QuestionCreationRequestDTO questionCreationRequest) {
-        Question createdQuestion = questionService.createQuestion(questionCreationRequest, setId);
+            @RequestBody @Valid QuestionCreationBodyDTO questionCreationBody) {
+        Question createdQuestion = questionService.createQuestion(questionCreationBody, setId);
         return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseDTO<Question>(createdQuestion));
     }
 
-    @PutMapping("/{questionId}")
-    public ResponseEntity<?> updateQuestion(
+    @PutMapping(PathConstants.QUESTION_ID)
+    public ResponseEntity<Question> updateQuestion(
             @PathVariable UUID setId,
             @PathVariable UUID questionId,
-            @RequestBody @Valid QuestionUpdateRequestDTO questionUpdateBody) {
+            @RequestBody @Valid QuestionUpdateBodyDTO questionUpdateBody) {
         Question updatedQuestion = questionService.updateQuestion(questionUpdateBody, questionId);
         return ResponseEntity.status(HttpStatus.OK).body(updatedQuestion);
 
     }
 
-    @DeleteMapping("/{questionId}")
-    public ResponseEntity<?> deleteQuestion(@PathVariable UUID setId, @PathVariable UUID questionId) {
+    @DeleteMapping(PathConstants.QUESTION_ID)
+    public ResponseEntity<Void> deleteQuestion(@PathVariable UUID setId, @PathVariable UUID questionId) {
         questionService.deleteQuestion(questionId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 

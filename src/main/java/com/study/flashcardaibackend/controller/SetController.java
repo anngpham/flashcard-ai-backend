@@ -2,9 +2,9 @@ package com.study.flashcardaibackend.controller;
 
 import com.study.flashcardaibackend.constant.FilterAttrConstants;
 import com.study.flashcardaibackend.constant.PathConstants;
-import com.study.flashcardaibackend.dto.set.SetCreationRequestBodyDTO;
+import com.study.flashcardaibackend.dto.set.SetCreationBodyDTO;
 import com.study.flashcardaibackend.dto.set.SetCreationResponseDTO;
-import com.study.flashcardaibackend.dto.set.SetUpdateRequestBodyDTO;
+import com.study.flashcardaibackend.dto.set.SetUpdateBodyDTO;
 import com.study.flashcardaibackend.model.set.Set;
 import com.study.flashcardaibackend.service.set.SetService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,22 +30,22 @@ public class SetController {
     @PostMapping
     public ResponseEntity<SetCreationResponseDTO> createSet(
             HttpServletRequest request,
-            @RequestBody @Valid SetCreationRequestBodyDTO setCreationBody) {
+            @RequestBody @Valid SetCreationBodyDTO setCreationBody) {
         UUID userId = (UUID) request.getAttribute(FilterAttrConstants.USER_ID);
         Set createdSet = setService.createSet(setCreationBody, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(new SetCreationResponseDTO(createdSet));
     }
 
     @PutMapping(PathConstants.SET_ID)
-    public ResponseEntity<?> updateSet(
+    public ResponseEntity<Set> updateSet(
             @PathVariable UUID setId,
-            @RequestBody @Valid SetUpdateRequestBodyDTO setUpdateBody) {
+            @RequestBody @Valid SetUpdateBodyDTO setUpdateBody) {
         Set updatedSet = setService.updateSet(setId, setUpdateBody);
         return ResponseEntity.status(HttpStatus.OK).body(updatedSet);
     }
 
     @DeleteMapping(PathConstants.SET_ID)
-    public ResponseEntity<?> deleteSet(@PathVariable UUID setId) {
+    public ResponseEntity<Void> deleteSet(@PathVariable UUID setId) {
         setService.deleteSet(setId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
