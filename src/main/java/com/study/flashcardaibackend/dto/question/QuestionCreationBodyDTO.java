@@ -1,6 +1,6 @@
 package com.study.flashcardaibackend.dto.question;
 
-import com.study.flashcardaibackend.dto.answer.AnswerCreationRequestDTO;
+import com.study.flashcardaibackend.dto.answer.AnswerCreationBodyDTO;
 import com.study.flashcardaibackend.enums.QuestionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class QuestionCreationRequestDTO {
+public class QuestionCreationBodyDTO {
 
     @NotBlank(message = "question title not blank")
     private String title;
@@ -23,6 +23,6 @@ public class QuestionCreationRequestDTO {
 
     @NotEmpty(message = "list answers cannot be empty")
     @Valid
-    private List<AnswerCreationRequestDTO> newAnswers;
+    private List<AnswerCreationBodyDTO> newAnswers;
 
 }

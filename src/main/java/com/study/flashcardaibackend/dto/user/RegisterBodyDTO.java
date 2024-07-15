@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RegisterRequestBodyDTO {
+public class RegisterBodyDTO {
     @NotBlank(message = "email not empty")
     @Email(message = "email is not valid")
     private String email;

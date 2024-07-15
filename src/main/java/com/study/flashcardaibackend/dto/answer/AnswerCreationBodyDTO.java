@@ -1,25 +1,20 @@
 package com.study.flashcardaibackend.dto.answer;
 
-import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @ToString
-public class AnswerUpdateRequestDTO {
+public class AnswerCreationBodyDTO {
 
-    @NotNull(message = "id not null")
-    private UUID id;
-    
-    @Nullable
+    @NotBlank(message = "answer content not blank")
     private String content;
 
-    @Nullable
+    @NotNull(message = "isCorrect not null")
     private Boolean isCorrect;
 
 }
