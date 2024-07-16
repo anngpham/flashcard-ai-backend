@@ -1,10 +1,10 @@
 package com.study.flashcardaibackend.service.set;
 
 import com.study.flashcardaibackend.dao.SetRepository;
-import com.study.flashcardaibackend.dao.UserRepository;
 import com.study.flashcardaibackend.dto.set.SetCreationBodyDTO;
 import com.study.flashcardaibackend.dto.set.SetUpdateBodyDTO;
 import com.study.flashcardaibackend.entity.set.SetEntity;
+import com.study.flashcardaibackend.entity.user.UserEntity;
 import com.study.flashcardaibackend.model.set.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +17,10 @@ import java.util.UUID;
 public class SetServiceImpl implements SetService {
 
     private final SetRepository setRepository;
-    private final UserRepository userRepository;
 
     @Autowired
-    public SetServiceImpl(SetRepository setRepository, UserRepository userRepository) {
+    public SetServiceImpl(SetRepository setRepository) {
         this.setRepository = setRepository;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -36,7 +34,7 @@ public class SetServiceImpl implements SetService {
         SetEntity setEntity = new SetEntity();
         setEntity.setTitle(setCreationBody.getTitle());
         setEntity.setDescription(setCreationBody.getDescription());
-        setEntity.setOwner(userRepository.getReferenceById(userId));
+        setEntity.setOwner(UserEntity.getReferenceById(userId));
         SetEntity createdSet = setRepository.save(setEntity);
         return Set.fromEntity(createdSet);
     }
@@ -56,4 +54,5 @@ public class SetServiceImpl implements SetService {
         setEntity.setDeleted(true);
         setRepository.save(setEntity);
     }
+
 }

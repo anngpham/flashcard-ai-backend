@@ -30,8 +30,8 @@ public class Answer {
         return new Answer(
                 answerEntity.getId(),
                 answerEntity.getContent(),
-                answerEntity.getIsCorrect(),
-                answerEntity.getIsDeleted(),
+                answerEntity.isCorrect(),
+                answerEntity.isDeleted(),
                 answerEntity.getCreatedAt(),
                 answerEntity.getUpdatedAt()
         );
