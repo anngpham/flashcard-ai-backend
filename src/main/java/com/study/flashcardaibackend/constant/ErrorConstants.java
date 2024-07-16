@@ -26,4 +26,7 @@ public class ErrorConstants {
     public static final String ANSWER_IS_DUPLICATED = "Answer is duplicated";
     public static final String ANSWER_IS_DELETED = "Answer is duplicated";
 
+    public static final String SORT_BY_PARAMETER_INVALID = "Invalid sort_by parameter";
+    ;
+
 }

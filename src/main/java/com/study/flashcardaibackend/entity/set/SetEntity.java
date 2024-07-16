@@ -26,6 +26,9 @@ import java.util.UUID;
 @DynamicInsert
 @DynamicUpdate
 @ToString
+@AttributeOverrides({
+        @AttributeOverride(name = "createdAt", column = @Column(name = "created_at"))
+})
 public class SetEntity implements Serializable {
 
     @Id

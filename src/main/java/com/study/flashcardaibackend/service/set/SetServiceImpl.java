@@ -7,6 +7,8 @@ import com.study.flashcardaibackend.entity.set.SetEntity;
 import com.study.flashcardaibackend.entity.user.UserEntity;
 import com.study.flashcardaibackend.model.set.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -53,6 +55,12 @@ public class SetServiceImpl implements SetService {
         SetEntity setEntity = setRepository.findById(setId).get();
         setEntity.setDeleted(true);
         setRepository.save(setEntity);
+    }
+
+    @Override
+    public Page<Set> getListOfSetByOwnerId(UUID userId, String search, Pageable pageable) {
+//        return setRepository.findByOwnerIdAndIsDeletedIsFalseAndTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(userId, search, search, pageable);
+        return setRepository.getListOfSetsByOwnerId(userId, search.toUpperCase(), pageable);
     }
 
 }

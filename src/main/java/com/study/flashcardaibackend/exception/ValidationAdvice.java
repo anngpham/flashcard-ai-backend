@@ -1,6 +1,7 @@
 package com.study.flashcardaibackend.exception;
 
 import com.study.flashcardaibackend.dto.common.ErrorResponseDTO;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
@@ -41,6 +43,20 @@ public class ValidationAdvice {
     @ExceptionHandler(NoResourceFoundException.class)
     public final ResponseEntity<ErrorResponseDTO> handleNoResourceException(NoResourceFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(List.of(API_NOT_FOUND)));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
+        this.logger.warn(exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(List.of(API_NOT_FOUND)));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public final ResponseEntity<ErrorResponseDTO> handleConstraintViolationException(ConstraintViolationException exception) {
+        List<String> errorMessages = exception.getConstraintViolations().stream()
+                .map(violation -> String.format("%s: %s", violation.getPropertyPath(), violation.getMessage()))
+                .toList();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(errorMessages));
     }
 
     @ExceptionHandler(HttpRuntimeException.class)
