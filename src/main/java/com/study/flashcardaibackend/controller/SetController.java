@@ -64,7 +64,7 @@ public class SetController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getListOfSet(
+    public ResponseEntity<Page<Set>> getListOfSet(
             HttpServletRequest request,
             @RequestParam(defaultValue = "1") @Min(1) int page,
             @RequestParam(value = "page_size", defaultValue = "20") @Min(1) int pageSize,
