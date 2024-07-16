@@ -133,14 +133,13 @@ public class QuestionServiceImpl implements QuestionService {
         answerService.saveAll(list);
 
         // after saving, get list answers of question again and check
-        ValidationDetail validationDetail = checkQuestionHasValidAnswers(updatedQuestion.getQuestionType(), answerService.getAllAnswersByQuestionId(questionId));
+        List<AnswerEntity> answers = answerService.getAllAnswersByQuestionId(questionId);
+        ValidationDetail validationDetail = checkQuestionHasValidAnswers(updatedQuestion.getQuestionType(), answers);
         if (!validationDetail.isValid()) {
             throw new HttpRuntimeException(HttpStatus.BAD_REQUEST, validationDetail.getMessage());
         }
-
         Question questionModel = Question.fromEntity(updatedQuestion);
-        List<Answer> answers = updatedQuestion.getAnswers().stream().map(Answer::fromEntity).toList();
-        return new QuestionDetail(questionModel, answers);
+        return new QuestionDetail(questionModel, answers.stream().map(Answer::fromEntity).toList());
     }
 
     @Override
