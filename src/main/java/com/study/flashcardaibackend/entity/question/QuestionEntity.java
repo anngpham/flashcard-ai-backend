@@ -61,4 +61,10 @@ public class QuestionEntity {
                     CascadeType.DETACH, CascadeType.REFRESH})
     @JsonManagedReference
     private List<AnswerEntity> answers;
+
+    public static QuestionEntity getReferenceById(UUID questionId) {
+        QuestionEntity question = new QuestionEntity();
+        question.setId(questionId);
+        return question;
+    }
 }

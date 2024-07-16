@@ -64,5 +64,9 @@ public class SetEntity implements Serializable {
     @JsonManagedReference
     private List<QuestionEntity> questions;
 
-
+    public static SetEntity getReferenceById(UUID setId) {
+        SetEntity set = new SetEntity();
+        set.setId(setId);
+        return set;
+    }
 }

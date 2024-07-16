@@ -21,6 +21,7 @@ public class ErrorConstants {
     public static final String QUESTION_NOT_FOUND = "Question not found";
     public static final String QUESTION_IS_DELETED = "Question is deleted";
 
+    public static final String ANSWER_NOT_BELONG_TO_QUESTION = "Answer not belong to question";
     public static final String ANSWER_NOT_FOUND = "Answer not found";
     public static final String ANSWER_IS_DUPLICATED = "Answer is duplicated";
     public static final String ANSWER_IS_DELETED = "Answer is duplicated";

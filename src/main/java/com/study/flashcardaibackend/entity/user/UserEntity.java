@@ -55,4 +55,10 @@ public class UserEntity {
     @JsonManagedReference
     private List<SetEntity> sets;
 
+    public static UserEntity getReferenceById(UUID userId) {
+        UserEntity user = new UserEntity();
+        user.setId(userId);
+        return user;
+    }
+
 }

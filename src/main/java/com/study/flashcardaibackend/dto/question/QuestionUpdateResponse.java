@@ -17,7 +17,6 @@ public class QuestionUpdateResponse extends SuccessResponseDTO<QuestionDetail> {
     public QuestionDetail getData() {
         QuestionDetail questionDetail = super.getData();
         questionDetail.setIsDeleted(null); // remove deleted field from response for security reasons
-        questionDetail.getAnswers().forEach(answer -> answer.setIsDeleted(null)); // remove deleted field from response for security reasons
         return questionDetail;
     }
 }

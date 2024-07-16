@@ -67,7 +67,7 @@ public class FilterConfig {
                 = new FilterRegistrationBean<>();
 
         questionFilterRegistrationBean.setFilter(new QuestionFilter(resolver, questionService));
-        questionFilterRegistrationBean.addUrlPatterns("/*"); // all question endpoints and sub-endpoints
+        questionFilterRegistrationBean.addUrlPatterns(PathConstants.SET + "/*"); // all question endpoints and sub-endpoints
         questionFilterRegistrationBean.setOrder(3); // run after set filter
 
         return questionFilterRegistrationBean;

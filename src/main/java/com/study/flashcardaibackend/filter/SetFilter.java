@@ -32,10 +32,16 @@ public class SetFilter extends OncePerRequestFilter {
         this.setService = setService;
     }
 
+    private boolean isSetDetailRoute(HttpServletRequest request) {
+
+        boolean isEndWithSetRoute = request.getRequestURI().endsWith(PathConstants.SET);
+        return !isEndWithSetRoute;
+    }
+
     // Allow filter running in all /api/sets/* routes except: /api/sets
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return request.getRequestURI().endsWith(PathConstants.SET);
+        return !this.isSetDetailRoute(request);
     }
 
     @Override
