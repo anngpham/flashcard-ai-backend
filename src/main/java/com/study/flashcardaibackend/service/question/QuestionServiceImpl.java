@@ -153,8 +153,6 @@ public class QuestionServiceImpl implements QuestionService {
     private ValidationDetail checkQuestionHasValidAnswers(QuestionType questionType, List<AnswerEntity> answers) {
         int numberOfAnswers = (int) answers.stream().filter(a -> !a.isDeleted()).count();
         int numberOfCorrectAnswers = (int) answers.stream().filter(a -> a.isCorrect() && !a.isDeleted()).count();
-        System.out.println("numberOfAnswers: " + numberOfAnswers);
-        System.out.println("numberOfCorrectAnswers: " + numberOfCorrectAnswers);
         switch (questionType) {
             case TEXT_FILL: {
                 if (numberOfAnswers != 1 || numberOfCorrectAnswers != 1) {
