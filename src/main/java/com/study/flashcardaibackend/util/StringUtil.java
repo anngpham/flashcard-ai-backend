@@ -1,6 +1,9 @@
 package com.study.flashcardaibackend.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public final class StringUtil {
 
@@ -77,34 +80,5 @@ public final class StringUtil {
         } catch (IllegalArgumentException e) {
             return null;
         }
-    }
-
-    /**
-     * Converts a snake_case string to camelCase
-     * Eg: convertSnakeToCamel("first_name") -> "firstName"
-     *
-     * @param snakeCase snake_case string
-     * @return camelCase string
-     */
-    public static String convertSnakeToCamel(String snakeCase) {
-        return Arrays.stream(snakeCase.split("_"))
-                .reduce("", (partialResult, word) -> {
-                    if (partialResult.isEmpty()) {
-                        return word;
-                    } else {
-                        return partialResult + capitalizeWord(word);
-                    }
-                });
-    }
-
-    /**
-     * Capitalizes the first letter of a word
-     * Eg: capitalizeWord("word") -> "Word"
-     *
-     * @param word word to capitalize
-     * @return capitalized word
-     */
-    private static String capitalizeWord(String word) {
-        return Character.toUpperCase(word.charAt(0)) + word.substring(1);
     }
 }
