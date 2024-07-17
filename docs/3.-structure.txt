@@ -1,0 +1,103 @@
+1. Lifecycle of an Object:
+Request:
+Frontend --(RequestDTO)--> Controller --(Model)--> Service --(Entity)--> Repository --(SQLInput)--> Database (Table)
+
+Response:
+Database (Table) --(SQLResult)--> Repository --(Entity)--> Service --(Model)--> Controller --(ResponseDTO)--> Frontend
+
+2. Forms of Objects:
+RequestDTO:
+  - Contains requests from the Frontend (created from the Frontend's request)
+  - Only exists in the Controller
+  - Contains validated input information from the user
+  - Typically includes the following information:
+     + URL parameters: 
+      > ParamDTO: :productId, :userId, :questionId 
+      > QueryDTO: pagination, filter, sort
+     + Body payload: BodyDTO. eg: {title, content}
+     + Header information: {Authorization, Cookie}
+     + Other information: request METHOD, request IP, request time,...
+  - Examples:
+    > ListSetRequestDTO (used to get a list of sets)
+    > ListSetQueryDTO (part of ListSetRequestDTO)
+    > SetDetailRequestDTO (used to get set details)
+    > SetCreateRequestDTO (used to create a set)
+    > SetUpdateRequestDTO (used to update a set)
+    > SetDeleteRequestDTO (used to delete a set)
+
+
+ResponseDTO:
+  - Contains the result returned to the Frontend (constructed from Models)
+  - Only exists in the Controller
+  - Holds the information requested by the user
+    + Information from Models: list, total, page, pageSize
+    + Other information: status, message, error, ...
+
+  - Examples:
+    > ListSetResponseDTO (used to return a list of sets)
+    > SetDetailResponseDTO (used to return set details)
+    > SetCreateResponseDTO (used to return a set after creation)
+    > SetUpdateResponseDTO (used to return a set after update)
+    > SetDeleteResponseDTO (used to return a set after deletion)
+
+Model:
+  - Operates within the scope of Controller and Service
+  - Can be created from RequestDTO or Entity
+  - Can be part of ResponseDTO to return to the Frontend
+  - Usually two types of Models:
+    + Model: Set, Question (contains basic information)
+    + Model detail: SetDetail, QuestionDetail (contains detailed information and sublists)
+
+Entity:
+  - Directly interacts with the database
+  - Can be created from Model (e.g., to save Question to the database, convert QuestionModel to QuestionEntity)
+  - Can be converted to Model to return to Controller and Frontend
+  - Only exists in Repository
+  - Contains configuration information for Table in the database (columns) and can be used to generate Table
+  - Examples:
+    + SetEntity
+    + QuestionEntity
+
+
+Table:
+  - The physical form of the object in the Database
+  - Only exists in the Database
+  - Examples:
+    + SetTable
+    + QuestionTable
+
+
+3. Object Management Classes:
+  
+Controller:
+  - Handles RequestDTO: validate, parseRequest, convertRequestToModel
+  - Calls services to manipulate data, then converts the result into ResponseDTO
+
+Service:
+  - Handles business logic, calls Repository if needed for data manipulation
+  - A service can be called from multiple Controllers
+
+Repository:
+  - Performs database operations (CRUD)
+  - Besides default CRUD operations, can write more complex SQL queries
+  - A repository can be called from multiple Services
+
+🍀 Object management classes are Singletons, meaning there is only one instance of the class in the entire application
+
+4. Layers:
+
+- Presentation Layer: What the users see (user interface)
+  + Users: Frontend, Controller
+  + Exchange goods: RequestDTO, ResponseDTO
+
+- Business Layer: Heavy on logic, handles business processing
+  + Users: Service
+  + Exchange goods: Model
+
+- Data Access Layer: Interacts with the database
+  + Users: Repository
+  + Exchange goods: Entity
+
+- Physical Layer: Stores physical data (hard drive)
+  + Goods storage: Table, View (cache from Tables)
+  + Exchange methods: SQL, JDBC, ORM

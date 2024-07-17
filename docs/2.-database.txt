@@ -1,0 +1,136 @@
+📚 Database Design for Flashcard and Quiz Website (Postgresql)
+Note: Quiz table should be transactional data. If we update the question or answer, the quiz and quiz result should not be changed.
+
+// Store Postgresql enums
+
+enum Role {
+  USER
+  STAFF
+}
+
+enum QuestionType {
+  TEXT_FILL
+  MULTIPLE_CHOICE
+  CHECKBOXES
+}
+
+// Store actor data
+
+User {
+  id: ID (auto uuid)
+  email: string (unique)
+  password: string (hashed)
+  role: Role
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+// Store flashcard data (master data)
+
+Set {
+  id: ID (auto uuid)
+  title: string
+  description?: string
+  owner_id: ID (foreign key to User)
+  public: boolean (default false)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+Question {
+  id: ID (auto uuid)
+  title: string
+  type: QuestionType
+  set_id: ID (foreign key to Set)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+Answer {
+  id: ID (auto uuid)
+  content: string
+  is_correct: boolean
+  question_id: ID (foreign key to Question)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+// Store quiz data
+
+Quiz {
+  id: ID (auto uuid)
+  owner_id: ID (foreign key to User)
+  set_id: ID (foreign key to Set)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+QuizQuestion {
+  id: ID (auto uuid)
+  quiz_id: ID (foreign key to Quiz)
+  origin_question_id: ID (foreign key to Question)
+  title: string (denormalize from Question)
+  type: QuestionType (denormalize from Question)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+QuizQuestionAnswer {
+  id: ID (auto uuid)
+  quiz_question_id: ID (foreign key to QuizQuestion)
+  origin_answer_id: ID (foreign key to Answer)
+  content: string (denormalize from Answer)
+  is_correct: boolean (denormalize from Answer)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+// Store test result
+
+Test {
+  id: ID (auto uuid)
+  quiz_id: ID (foreign key to Quiz)
+  user_id: ID (foreign key to User)
+  score: float
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+Solution {
+  id: ID (auto uuid)
+  test_id: ID (foreign key to Test)
+  quiz_question_id: ID (foreign key to QuizQuestion)
+  text_answer?: string, (to save TEXT_FILL)
+  multiple_choice_answer?: ID (foreign key to QuizQuestionAnswer)
+  checboxes_answer?: ID[] (list foreign key of QuizQuestionAnswer)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+// Share Set, Quiz with other users
+
+UserSet {
+  id: ID (auto uuid)
+  user_id: ID (foreign key to User)
+  set_id: ID (foreign key to Set)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
+
+UserQuiz {
+  id: ID (auto uuid)
+  user_id: ID (foreign key to User)
+  quiz_id: ID (foreign key to Quiz)
+  is_deleted: boolean (default false)
+  created_at: datetime (default now)
+  updated_at: datetime (default now)
+}
