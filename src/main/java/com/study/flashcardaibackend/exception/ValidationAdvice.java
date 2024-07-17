@@ -19,8 +19,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.study.flashcardaibackend.constant.ErrorConstants.API_NOT_FOUND;
-import static com.study.flashcardaibackend.constant.ErrorConstants.INTERNAL_SERVER_ERROR;
+import static com.study.flashcardaibackend.constant.ErrorConstants.*;
 
 @Slf4j
 @ControllerAdvice
@@ -48,7 +47,7 @@ public class ValidationAdvice {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public final ResponseEntity<ErrorResponseDTO> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
         this.logger.warn(exception.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDTO(List.of(API_NOT_FOUND)));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDTO(List.of(PARAMS_URL_WRONG_FORMAT)));
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
