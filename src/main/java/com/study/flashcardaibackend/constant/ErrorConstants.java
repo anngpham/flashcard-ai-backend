@@ -2,6 +2,7 @@ package com.study.flashcardaibackend.constant;
 
 public class ErrorConstants {
     public static final String API_NOT_FOUND = "API not found";
+    public static final String PARAMS_URL_WRONG_FORMAT = "Parameters in URL have wrong format";
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error. Please try again later";
 
     public static final String HEADER_TOKEN_NOT_FOUND = "Header Token not found";
@@ -25,5 +26,8 @@ public class ErrorConstants {
     public static final String ANSWER_NOT_FOUND = "Answer not found";
     public static final String ANSWER_IS_DUPLICATED = "Answer is duplicated";
     public static final String ANSWER_IS_DELETED = "Answer is duplicated";
+
+
+    ;
 
 }

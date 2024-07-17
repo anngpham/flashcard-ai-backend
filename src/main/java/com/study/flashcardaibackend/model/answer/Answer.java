@@ -18,7 +18,7 @@ public class Answer {
 
     private String content;
 
-    private boolean isCorrect;
+    private Boolean isCorrect;
 
     private Boolean isDeleted;
 
