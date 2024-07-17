@@ -59,7 +59,7 @@ public class SetServiceImpl implements SetService {
 
     @Override
     public Page<Set> getListOfSetByOwnerId(UUID userId, String search, Pageable pageable) {
-        return setRepository.getListOfSetsByOwnerId(userId, search.toUpperCase(), pageable);
+        return setRepository.getListOfSetsByOwnerId(userId, search, pageable);
     }
 
 }
